@@ -28,16 +28,16 @@ internal class Program
         Comic ProcessComicFile(string filePath)
         {
             Comic comic;
-            var tempFilePath = TempStorageHelper.SetUpTempFolder(filePath);
-            if (ArchiveHelpers.ZipUnpacked(filePath, tempFilePath, out bool usedRar))
+            var tempFolderPath = TempStorageHelper.SetUpTempFolder(filePath);
+            if (ArchiveHelpers.ZipUnpacked(filePath, tempFolderPath, out bool usedRar))
             {
-                comic = new Comic(usedRar).CreateFromFile(tempFilePath);
+                comic = new Comic(usedRar).CreateFromFile(tempFolderPath);
             }
             else
             {
                 comic = new Comic() { FilePath = filePath, FileName = filePath.Split("\\").Last(), Identifier = new Guid(), Error = ComicProcessingError.UnableToUnzip };
             }
-            TempStorageHelper.CleanUpTempFolder(comic);
+            TempStorageHelper.CleanUpTempFolder(tempFolderPath);
             return comic;
         }
     }

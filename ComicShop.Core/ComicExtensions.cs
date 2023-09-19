@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using SharpCompress.Common;
+using System.Drawing;
 
 namespace ComicShop.Core
 {
@@ -14,9 +15,11 @@ namespace ComicShop.Core
         {
             try
             {
+                comic.Identifier = Guid.NewGuid();
                 string[] allFiles = Directory.GetFiles(filePath, "*.*", SearchOption.AllDirectories);
-                string coverImageFile = allFiles.Where(identifyImageFiles).ToArray()[0];
-                comic.CoverImagePath = coverImageFile;
+                string tempCoverImagePath = allFiles.Where(identifyImageFiles).ToArray()[0];
+                var coverImagePath = ImageHelpers.CreateOptimizedCoverImage(tempCoverImagePath, comic.Identifier );
+                comic.CoverImagePath = coverImagePath;
 
                 comic.HasMetaData = allFiles.Any(file => file.Contains(".xml"));
                 if (comic.HasMetaData)
@@ -33,5 +36,7 @@ namespace ComicShop.Core
                 throw;
             }
         }
+
+       
     }
 }
