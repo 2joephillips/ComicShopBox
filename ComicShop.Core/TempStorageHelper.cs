@@ -1,11 +1,19 @@
 ﻿namespace ComicShop.Core
 {
+    public static class AppStorageHelper
+    {
+        public static string GetPath()
+        {
+            return Path.GetTempPath() + "comicShop\\";
+        }
+    }
+
     public static class TempStorageHelper
     {
-        public static void CleanUpTempFolder(Comic comic)
+        public static void CleanUpTempFolder(string tempFolderPath)
         {
-            var tempFilePath = GetTempFilePath(comic.FilePath);
-  
+            if (Directory.Exists(tempFolderPath))
+                Directory.Delete(tempFolderPath, true);
         }
 
         public static string SetUpTempFolder(string filePath)
@@ -21,7 +29,7 @@
 
         static string GetTempFilePath(string filePath)
         {
-            return Path.GetTempPath() + "comicShop\\" + filePath.Split("\\").Last();
+            return $"{AppStorageHelper.GetPath()}{filePath.Split("\\").Last()}";
         }
     }
 }

@@ -32,5 +32,4 @@ public enum ComicProcessingError
     None = 0,
     UnableToUnzip
 }
-}
 
