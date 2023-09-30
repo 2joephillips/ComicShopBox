@@ -1,10 +1,13 @@
 ﻿using System.Xml.Serialization;
+using SQLite;
 
 namespace ComicShop.Core
 {
     [XmlRoot("ComicInfo")]
     public class ComicMetaData
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
         public string Series { get; set; }
         public string Number { get; set; }
         public int Volume { get; set; }
@@ -27,6 +30,7 @@ namespace ComicShop.Core
         public string ScanInformation { get; set; }
 
         [XmlElement("Pages")]
+        [Ignore]
         public Pages Pages { get; set; }
     }
 

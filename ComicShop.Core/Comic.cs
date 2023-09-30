@@ -1,4 +1,7 @@
 ﻿
+using SQLite;
+using SQLiteNetExtensions.Attributes;
+
 namespace ComicShop.Core
 {
     public class Comic
@@ -13,7 +16,7 @@ namespace ComicShop.Core
         {
             UsedRar = usedRar;
         }
-
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public Guid Identifier { get; set; }
         public string FileName { get; set; }
@@ -21,7 +24,13 @@ namespace ComicShop.Core
         public byte[] CoverImage { get; set; }
         public string CoverImagePath { get; set; }
         public bool HasMetaData { get; set; }
+
+        [ForeignKey(typeof(ComicMetaData))]
+        public int ComicMetaDataId { get; set; }
+
+        [OneToOne]
         public ComicMetaData MetaData { get; set; }
+
         public ComicProcessingError Error { get; set; }
         public bool UsedRar { get; }
     }

@@ -1,4 +1,4 @@
-﻿using ComicShopBox.Model;
+﻿using ComicShop.Core;
 using ComicShopBox.Services;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;

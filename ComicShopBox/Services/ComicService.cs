@@ -1,5 +1,5 @@
-﻿using ComicShopBox.Database;
-using ComicShopBox.Model;
+﻿using ComicShop.Core;
+using ComicShopBox.Database;
 using Newtonsoft.Json;
 
 namespace ComicShopBox.Services;

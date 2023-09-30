@@ -1,5 +1,4 @@
-﻿using ComicShopBox.Core.Model;
-using ComicShopBox.Services;
+﻿using ComicShop.Core;
 using SQLite;
 
 namespace ComicShopBox.Database;
@@ -22,11 +21,20 @@ internal static class ComicShopBoxDatabaseService
     static SQLiteAsyncConnection db;
     static async Task Init()
     {
-        if (db != null)
-            return;
-        db = new SQLiteAsyncConnection(ComicShopBoxDatabase.DatabasePath, ComicShopBoxDatabase.Flags);
+        try
+        {
+            if (db != null)
+                return;
+            db = new SQLiteAsyncConnection(ComicShopBoxDatabase.DatabasePath, ComicShopBoxDatabase.Flags);
 
-        await db.CreateTableAsync<Comic>();
+            await db.CreateTableAsync<ComicMetaData>();
+            await db.CreateTableAsync<Comic>();
+        }
+        catch (Exception ex)
+        {
+            Console.Write(ex.Message);
+        }
+
     }
 
     public static async Task<int> NumberOfComics()
