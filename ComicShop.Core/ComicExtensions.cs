@@ -15,7 +15,6 @@ namespace ComicShop.Core
         {
             try
             {
-                comic.Identifier = Guid.NewGuid();
                 string[] allFiles = Directory.GetFiles(filePath, "*.*", SearchOption.AllDirectories);
                 string tempCoverImagePath = allFiles.Where(identifyImageFiles).ToArray()[0];
                 var coverImagePath = ImageHelpers.CreateOptimizedCoverImage(tempCoverImagePath, comic.Identifier );

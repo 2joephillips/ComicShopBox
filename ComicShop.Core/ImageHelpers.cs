@@ -7,7 +7,7 @@ public static class ImageHelpers
 {
     public static string GetCoverImagesPath()
     {
-        var coverImagePath =  Path.Combine(AppStorageHelper.GetPath(), "coverImages");
+        var coverImagePath = AppStorageHelper.GetCoverImagesPath();
         if (!Directory.Exists(coverImagePath))
         {
             Directory.CreateDirectory(coverImagePath);

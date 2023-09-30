@@ -1,5 +1,6 @@
 ﻿using ComicShopBox.Database;
 using ComicShopBox.Services;
+using ComicShopBox.View;
 using ComicShopBox.ViewModel;
 using Microsoft.Extensions.Logging;
 
@@ -25,8 +26,11 @@ namespace ComicShopBox
             builder.Services.AddSingleton<ComicService>();
 
             builder.Services.AddSingleton<ComicsViewModel>();
+            builder.Services.AddSingleton<ComicDetailsViewModel>();
+
 
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<DetailsPage>();
          
             return builder.Build();
         }

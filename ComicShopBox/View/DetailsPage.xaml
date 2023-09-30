@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:ComicShopBox.ViewModel"
+             x:DataType="viewmodel:ComicDetailsViewModel"
+             Title="DetailsPage"
+                          x:Class="ComicShopBox.View.DetailsPage">
+    <StackLayout Padding="40">
+        <Label 
+            Text="Welcome to .NET MAUI! Nope"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Button Text="Back Buttons"   
+                  Command="{Binding BackCommand}"  
+                    Margin="8" >
+        </Button>
+
+        <Button Text="Back Buttons"   
+                  Command="{Binding GoToStartUpCommand}"  
+                    Margin="8" >
+        </Button>
+        <Label Text="{Binding Comic.FileName}" />
+    </StackLayout>
+</ContentPage>

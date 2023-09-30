@@ -1,5 +1,4 @@
-﻿using ComicShopBox.Core.Model;
-using ComicShopBox.Services;
+﻿using ComicShop.Core;
 using SQLite;
 
 namespace ComicShopBox.Database;

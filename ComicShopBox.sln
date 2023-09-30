@@ -5,9 +5,9 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicShopBox", "ComicShopBox\ComicShopBox.csproj", "{43901800-81E0-40E4-AD6E-042E22202ADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicShopScrapper", "ComicShopScrapper\ComicShopScrapper.csproj", "{FCA9488B-D34A-46F6-AE28-5546BA8F56B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicShopScrapper", "ComicShopScrapper\ComicShopScrapper.csproj", "{FCA9488B-D34A-46F6-AE28-5546BA8F56B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicShop.Core", "ComicShop.Core\ComicShop.Core.csproj", "{3955A957-53BF-41A2-AD57-0DB52CA5D0BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicShop.Core", "ComicShop.Core\ComicShop.Core.csproj", "{3955A957-53BF-41A2-AD57-0DB52CA5D0BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

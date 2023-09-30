@@ -1,37 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:model="clr-namespace:ComicShopBox.Model"
+             xmlns:comic="clr-namespace:ComicShop.Core;assembly=ComicShop.Core"
              xmlns:viewmodel="clr-namespace:ComicShopBox.ViewModel"
              x:DataType="viewmodel:ComicsViewModel"
              Title="{Binding Title}"
-             x:Class="ComicShopBox.MainPage">
+             x:Class="ComicShopBox.MainPage" BackgroundColor="YellowGreen">
 
+    <Grid RowDefinitions=".1*,*, .2*">
+        <HorizontalStackLayout>
+            <Label Text="New Comics" FontSize="Large"></Label>
+        </HorizontalStackLayout>
+        <ScrollView Grid.Row="1">
+            <FlexLayout
+        AlignContent="Start"
+        AlignItems="Start"
+        AlignSelf="Start"
+        BindableLayout.ItemsSource="{Binding Comics}"
+        Direction="Row"
+        JustifyContent="SpaceAround"
+        Wrap="Wrap">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="comic:Comic">
+                        <VerticalStackLayout>
+                            <Image Source="{Binding CoverImagePath}" HeightRequest="300"/>
+                            <Label Text="{Binding FileName}" TextColor="Red"/>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        </ScrollView>
 
-    <Grid ColumnDefinitions="*,*" ColumnSpacing="5" RowDefinitions="*,Auto" RowSpacing="0">
-        <CollectionView Grid.ColumnSpan="2" ItemsSource="{Binding Comics}"
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Comic">
-                    <Grid Padding="10">
-                        <Frame HeightRequest="125">
-                            <Label Text="{Binding FileName}"></Label>
-                        </Frame>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            </CollectionView>
-        <Button Text="Get Comics" 
+        <!--<StackLayout Orientation="{OnPlatform Default=Horizontal, Android=Vertical, iOS=Vertical}" VerticalOptions="CenterAndExpand"  HorizontalOptions="CenterAndExpand">
+            <StackLayout>
+                <Grid>
+                    <Label x:Name="view1" Text="View 1" ZIndex="4" Margin="10,0,0,0" BackgroundColor="Green" Style="{StaticResource labelStyle}" b/>
+
+                    <Label x:Name="view2" Text="View 2" ZIndex="3" Margin="30,30,0,0" BackgroundColor="Navy" Style="{StaticResource labelStyle}"/>
+
+                    <Label x:Name="view3" Text="View 3" ZIndex="2" Margin="60,60,0,0" BackgroundColor="Yellow" Style="{StaticResource labelStyle}"/>
+
+                    <Label x:Name="view4" Text="View 4" ZIndex="1" Margin="90,90,0,0" BackgroundColor="SkyBlue" Style="{StaticResource labelStyle}"/>
+
+                </Grid>
+            </StackLayout>
+        </StackLayout>-->
+        <VerticalStackLayout Grid.Row="2">
+            <Button Text="Get Comics"   
                 Command="{Binding GetComicsCommand}"
-                IsEnabled="{Binding IsNotBusy}"
-                Grid.Row="1" Margin="8" >
-        </Button>
-
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"
+                IsEnabled="{Binding IsNotBusy}"    
+               Margin="8" >
+            </Button>
+            <Button Text="Go To Detail Page"   
+                  Command="{Binding NavigateCommand}"
+                  IsEnabled="{Binding IsNotBusy}"     
+                    Margin="8" >
+            </Button>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"
                            HorizontalOptions="FillAndExpand"
                            VerticalOptions="CenterAndExpand"
                            Grid.RowSpan="2"
                            Grid.ColumnSpan="2"></ActivityIndicator>
-        
+        </VerticalStackLayout>
     </Grid>
 </ContentPage>

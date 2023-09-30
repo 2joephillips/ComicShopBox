@@ -1,5 +1,7 @@
-﻿using ComicShopBox.Model;
+﻿
+using ComicShop.Core;
 using ComicShopBox.Services;
+using ComicShopBox.View;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -14,29 +16,34 @@ public partial class ComicsViewModel : BaseViewModel
     {
         Title = "Comics Mega List";
         this._service = service;
+        if (_service.notSetup) { Shell.Current.GoToAsync(nameof(StartUpPage)); }
     }
 
     [RelayCommand]
     async Task GetComicsAsync()
     {
-        if(IsBusy)return;
+        if (IsBusy) return;
 
         try
         {
             IsBusy = true;
             var comics = await _service.GetComics();
 
-            if(Comics.Count !=  0) { Comics.Clear(); }
-            foreach(var comic in comics) { Comics.Add(comic); }
+            if (Comics.Count != 0) { Comics.Clear(); }
+            foreach (var comic in comics.Take(20)) { Comics.Add(comic); }
+
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             Debug.WriteLine(ex);
             await Shell.Current.DisplayAlert("Error", "Unable to Get Comics: ", "OK");
 
 
         }
-        finally { 
-        IsBusy = false;
+        finally {
+            IsBusy = false;
         }
     }
+
+    [RelayCommand]
+    Task Navigate() => Shell.Current.GoToAsync(nameof(DetailsPage), new Dictionary<string, object> { ["Comic"] = Comics[0] });
 }
