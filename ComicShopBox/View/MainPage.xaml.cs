@@ -4,19 +4,13 @@ namespace ComicShopBox
 {
     public partial class MainPage : ContentPage
     {
-        private ComicsViewModel _viewModel;
+        private MainPageViewModel _viewModel;
 
-        public MainPage(ComicsViewModel viewModel)
+        public MainPage(MainPageViewModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;
             BindingContext = viewModel;
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            _viewModel.GetComicsCommand.ExecuteAsync(this);
         }
     }
 }

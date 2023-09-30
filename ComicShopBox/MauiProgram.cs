@@ -1,6 +1,8 @@
-﻿using ComicShopBox.Database;
-using ComicShopBox.Services;
+﻿using ComicShopBox.Services;
+using ComicShopBox.View;
 using ComicShopBox.ViewModel;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace ComicShopBox
@@ -12,6 +14,7 @@ namespace ComicShopBox
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -24,10 +27,18 @@ namespace ComicShopBox
 
             builder.Services.AddSingleton<ComicService>();
 
-            builder.Services.AddSingleton<ComicsViewModel>();
+            builder.Services.AddSingleton<MainPageViewModel>();
+            builder.Services.AddSingleton<StartUpViewModel>();
+            builder.Services.AddSingleton<DetailsViewModel>();
 
+            builder.Services.AddSingleton<LoadingPage>();
+            builder.Services.AddSingleton<StartUpPage>();
             builder.Services.AddSingleton<MainPage>();
-         
+            builder.Services.AddSingleton<DetailsPage>();
+
+
+            builder.Services.AddSingleton<IFolderPicker>(FolderPicker.Default);
+            
             return builder.Build();
         }
     }

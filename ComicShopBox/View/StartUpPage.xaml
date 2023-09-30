@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ComicShopBox.View.StartUpPage"
+             xmlns:viewmodel="clr-namespace:ComicShopBox.ViewModel"
+             x:DataType="viewmodel:StartUpViewModel"
+             Title="{Binding Title}"
+             BackgroundColor="PeachPuff">
+    <VerticalStackLayout>
+        <Label 
+            Text="Welcome to Comic Box"
+            FontSize="Title"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <VerticalStackLayout Spacing="12" >
+
+            <Label Text="Select Comics to import in to Comic Shop"
+               LineBreakMode = "WordWrap"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"/>
+
+            <Button Command="{Binding PickFolderCommand}"
+                Text="Pick Comic Folder"
+                HorizontalOptions="Center"/>
+            <Label IsVisible="{Binding FolderPicked}" Text="{Binding PickedFolderName}" 
+                   TextColor="Red"
+                                  HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

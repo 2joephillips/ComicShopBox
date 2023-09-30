@@ -1,5 +1,4 @@
 ﻿using ComicShop.Core;
-using ComicShopBox.Database;
 using Newtonsoft.Json;
 
 namespace ComicShopBox.Services;
@@ -10,37 +9,48 @@ public interface IComicService
     Task<List<Comic>> GetComics();
 }
 
+public interface IAppSettingsService
+{
+    Task<AppSettings> GetAppSettings();
+}
+
+public class AppSettings { 
+}
+
+public class AppSettingsService: IAppSettingsService
+{
+
+    public async Task<AppSettings> GetAppSettings()
+    {
+        var jsonFilePath = AppStorageHelper.GetAppSettingsPath();
+
+        return new AppSettings();
+    }
+}
+
+
 public class ComicService : IComicService
 {
-    string comicsFolderPath = "comics";
-    string jsonFilePath =  Path.Combine(AppContext.BaseDirectory, "Resources\\comicsArchive.json");
 
-    HttpClient client;
+    List<Comic> comicList = new();
+    public bool notSetup = false;
     public ComicService()
     {
-        client = new HttpClient();
+        AppStorageHelper.LoadSettings();
+        //notSetup = AppStorageHelper.AppSetup;
     }
-
-    List<Comic> comicList = new ();
-
     public async Task<List<Comic>> GetComics()
     {
-        if (comicList?.Count > 0) { return comicList; } 
-        if(await ComicShopBoxDatabaseService.NumberOfComics() == 0)
-        {
+        if (comicList?.Count > 0) { return comicList; }
 
-            if (File.Exists(jsonFilePath))
-            {
-                string json = File.ReadAllText(jsonFilePath);
-                return JsonConvert.DeserializeObject<List<Comic>>(json);
-            }
-            return new List<Comic>() { new Comic() { FileName ="Test", FilePath="Test"} };
-        } else
+        var jsonFilePath = AppStorageHelper.GetAppJsonFilePath();
+        if (File.Exists(jsonFilePath))
         {
-            comicList = await ComicShopBoxDatabaseService.GetComics();
+            string json = File.ReadAllText(jsonFilePath);
+            return JsonConvert.DeserializeObject<List<Comic>>(json);
         }
-       
-        return comicList ?? new List<Comic>();
+        return new List<Comic>() { new Comic() { FileName = "Test", FilePath = "Test" } };
+
     }
 }
 

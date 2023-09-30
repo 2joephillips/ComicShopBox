@@ -7,14 +7,14 @@ namespace ComicShop.Core
     public class Comic
     {
 
-
-        public Comic()
-        {
-            UsedRar = false;
-        }
-        public Comic(bool usedRar)
+        public Comic() { }
+        public Comic(string filePath) => new Comic(filePath, false);
+        public Comic(string filePath, bool usedRar)
         {
             UsedRar = usedRar;
+            FilePath = filePath;
+            FileName = filePath.Split("\\").Last();
+            Identifier = Guid.NewGuid();
         }
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -33,12 +33,15 @@ namespace ComicShop.Core
 
         public ComicProcessingError Error { get; set; }
         public bool UsedRar { get; }
+
+        public string Summary => HasMetaData ? MetaData.Summary ?? "" : "";
     }
 }
 
 public enum ComicProcessingError
 {
     None = 0,
-    UnableToUnzip
+    UnableToUnzip,
+    UnableToFindFile
 }
 
