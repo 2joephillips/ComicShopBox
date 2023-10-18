@@ -4,28 +4,72 @@
              x:Class="ComicShopBox.View.StartUpPage"
              xmlns:viewmodel="clr-namespace:ComicShopBox.ViewModel"
              x:DataType="viewmodel:StartUpViewModel"
-             Title="{Binding Title}"
-             BackgroundColor="PeachPuff">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to Comic Box"
-            FontSize="Title"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <VerticalStackLayout Spacing="12" >
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:fonts="clr-namespace:ComicShopBox.Models">
+    <Grid RowDefinitions=".33*,.20* ,.40*, .07*"
+          Padding="50,20, 0, 10">
+        <Grid Grid.Row="0"
+              RowDefinitions="Auto, auto">
 
-            <Label Text="Select Comics to import in to Comic Shop"
-               LineBreakMode = "WordWrap"
-               HorizontalOptions="Center"
-               HorizontalTextAlignment="Center"/>
-
+            <Label Text="Welcome to Comic Box"
+                   Grid.Row="0"
+                   FontSize="Header" />
+            <Label Text="This application is used to catalog, view and manage. To get started select the folder that contains your comics and determine if you would like to include ComicVine metadata."
+                   Grid.Row="1"
+                   FontSize="Subtitle"
+                   LineBreakMode="WordWrap" />
+        </Grid>
+        <VerticalStackLayout Grid.Row="1">
             <Button Command="{Binding PickFolderCommand}"
-                Text="Pick Comic Folder"
-                HorizontalOptions="Center"/>
-            <Label IsVisible="{Binding FolderPicked}" Text="{Binding PickedFolderName}" 
-                   TextColor="Red"
-                                  HorizontalOptions="Center"
-               HorizontalTextAlignment="Center"/>
+                    FontSize="Subtitle"
+                    Text="Pick Comic Folder">
+                <Button.ImageSource>
+                    <FontImageSource FontFamily="SolidIcons"
+                                     Glyph="{x:Static fonts:SolidIcons.FolderOpen}"
+                                     Color="{AppThemeBinding Dark=Black, Light=White}" />
+                </Button.ImageSource>
+            </Button>
+            <Label IsVisible="{Binding FolderPicked}"
+                   Text="{Binding PickedFolderName}"
+                   HorizontalOptions="Center"
+                   Padding="10,0" />
         </VerticalStackLayout>
-    </VerticalStackLayout>
+        <VerticalStackLayout  Grid.Row="2"
+                              Padding="0,20, 0, 10">
+            <HorizontalStackLayout  HorizontalOptions="Center">
+                <Label FontSize="Subtitle"
+                       Text="Use ComicVine MetaData"
+                       HorizontalOptions="Center" />
+                <CheckBox   IsChecked="{Binding UseComicVineApi}" />
+            </HorizontalStackLayout>
+            <VerticalStackLayout IsVisible="{Binding UseComicVineApi}">
+                <Entry Text="{Binding ComicVinApi}"
+                       Placeholder="ComicVine Api"
+                       MinimumWidthRequest="300" />
+                <Button Command="{Binding CheckApiKeyCommand}"
+                        Text="Confirm API Key" />
+                <Label>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenUrlCommand}"
+                                              CommandParameter="https://comicvine.gamespot.com/api/" />
+                    </Label.GestureRecognizers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Access/Create API at " />
+                            <Span Text="https://comicvine.gamespot.com/api"
+                                  TextColor="Blue"
+                                  TextDecorations="Underline">
+                            </Span>
+                            <Span Text="." />
+                        </FormattedString>
+                    </Label.FormattedText>
+
+                </Label>
+            </VerticalStackLayout>
+        </VerticalStackLayout >
+        <Button  Text="Start"
+                 Command="{Binding StartUpCommand}"
+                 Grid.Row="3" />
+
+    </Grid>
 </ContentPage>

@@ -1,29 +1,49 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using ComicShopBox.Services;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ComicShopBox.ViewModel
 {
     public partial class StartUpViewModel : BaseViewModel
     {
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(FolderPicked))]
         [NotifyPropertyChangedFor(nameof(PickedFolderName))]
-        FolderPickerResult pickedFolder;
+        [NotifyPropertyChangedFor(nameof(FolderPicked))]
+        [NotifyCanExecuteChangedFor(nameof(StartUpCommand))]
+        private FolderPickerResult? pickedFolder;
 
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(StartUpCommand))]
+        string comicVinApi;
 
-        public bool FolderPicked => pickedFolder != null;
-        public string PickedFolderName => FolderPicked ? PickedFolder.Folder.Name: string.Empty;
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(StartUpCommand))]
+        bool useComicVineApi;
+
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(StartUpCommand))]
+        bool comicVineKeyVerified;
+
+        public bool OkayToStart => ComicVineVetted && FolderPicked;
+
+        public bool ComicVineVetted => UseComicVineApi ? ComicVineKeyVerified : true;
+
+        public bool FolderPicked => PickedFolder != null && PickedFolder.IsSuccessful;
+        public string PickedFolderName => FolderPicked ? " Import Folder: " + PickedFolder.Folder.Name : " Import Folder: " + string.Empty;
 
         private readonly IFolderPicker _folderPicker;
-        public StartUpViewModel(IFolderPicker folderPicker)
+        private readonly ComicVineApiService _comicVineApiService;
+
+
+        public StartUpViewModel(IFolderPicker folderPicker, ComicVineApiService comicVineApi)
         {
             this.Title = "Start Up Page";
-            _folderPicker = folderPicker;   
-
+            _folderPicker = folderPicker;
+            _comicVineApiService = comicVineApi;
+            comicVinApi = "97108efe0d3ef7441f7a2954cf2e2e61532758b9";
         }
         public async void InitializeApplication()
         {
@@ -31,18 +51,34 @@ namespace ComicShopBox.ViewModel
         }
 
         [RelayCommand]
-        async Task PickFolder(CancellationToken cancellationToken)
+        public async Task PickFolder(CancellationToken cancellationToken)
         {
             PickedFolder = await _folderPicker.PickAsync(cancellationToken);
-            if (PickedFolder.IsSuccessful)
+            if (!PickedFolder.IsSuccessful)
             {
-                await Toast.Make($"Folder picked: Name - {PickedFolder.Folder.Name}, Path - {PickedFolder.Folder.Path}", ToastDuration.Long).Show(cancellationToken);
+                return;
             }
-            else
-            {
-                await Toast.Make($"Folder is not picked, {PickedFolder.Exception.Message}").Show(cancellationToken);
-            }
+            await Toast.Make($"Folder picked: Name - {PickedFolder.Folder.Name}, Path - {PickedFolder.Folder.Path}", ToastDuration.Long).Show(cancellationToken);
         }
-       
+
+        [RelayCommand(CanExecute = nameof(OkayToStart))]
+        public async Task StartUp() => await Shell.Current.GoToAsync($"../{nameof(MainPage)}");
+
+        [RelayCommand]
+        public void ToggleUseComicVineApi() => UseComicVineApi = !UseComicVineApi;
+
+        [RelayCommand]
+        public async Task OpenUrl(string url)
+        {
+             await Launcher.OpenAsync(url);
+        }
+
+        [RelayCommand]
+        public async Task CheckApiKey(string apiKey)
+        {
+            ComicVineKeyVerified = await _comicVineApiService.CheckApiKey(apiKey);
+            var resultIs = ComicVineKeyVerified ? "Good" : "Bad";
+            await Toast.Make($"Api Key is {resultIs}.").Show();
+        }
     }
 }

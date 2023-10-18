@@ -50,6 +50,12 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Resources\Fonts\FontClass.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiFont Include="Models\BrandsIcon.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
